@@ -1,7 +1,6 @@
 import UIKit
 
 /** характеристики */
-let controlMode = "manual" // режим управления manual или autopilot
 let weight = 2108 // кг
 let length = 4976 // мм
 let width = 1963 // мм
@@ -9,6 +8,18 @@ let height = 1435 // мм
 let wheelbase = 2959 // мм
 let clearance = 154.9 // мм
 let trunkVolume = 900 // л
+
+/** режим управления */
+var currentControlMode = "manual" // manual autopilot
+func switchControlMode() {
+    if (currentControlMode == "manual") {
+        currentControlMode = "autopilot"
+        print("Внимание! Включен автопилот, следите за дорогой!")
+    } else {
+        currentControlMode = "manual"
+        print("Внимание! Автопилот выключен, включено ручное управление!")
+    }
+}
 
 /** начальные параметры */
 var musicVolume = 0 // громкость 0..10
@@ -32,14 +43,16 @@ func autoDrive() throws {
         throw AutoError.tooQuietMusic
     }
 }
-    
+
+// переключаем режим управления
+switchControlMode()
 // пробуем присваивать новые значения
 musicVolume = 11
 
 do {
     try autoDrive()
 } catch AutoError.tooLoudMusic {
-    print("Музыкальная система не предусмотрена для более громкого звука!")
+    print("Ошибка! Музыкальная система не предусмотрена для более громкого звука!")
 } catch AutoError.tooQuietMusic {
-    print("Недопустимо отрицательное значение громкости!")
+    print("Ошибка! Недопустимо отрицательное значение уровня громкости!")
 }
